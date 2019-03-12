@@ -1,2 +1,2 @@
 
-MongoDB和DolphinDB的对比测试报告
+MongoDB和DolphinDB的对比分析报告
