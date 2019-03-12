@@ -1,0 +1,68 @@
+附录1：环境配置
+1.1、DolphinDB环境配置
+1.1.1、controller.cfg
+localSite=localhost:8920:ctl8920
+localExecutors=11
+maxConnections=128
+maxMemSize=2
+webWorkerNum=12
+workerNum=12
+dfsReplicationFactor=1
+dfsReplicaReliabilityLevel=0
+1.1.2、agent.cfg
+workerNum=12
+localExecutors=11
+maxMemSize=2
+localSite=localhost:8910:agentgetJobStat()
+controllerSite=localhost:8920:ctl8920
+1.1.3、cluster.cfg
+maxConnections=128
+maxMemSize=8
+workerNum=12
+localExecutors=11
+webWorkerNum=12
+1.1.4、cluster.nodes
+localSite,mode
+localhost:8910:agent,agent
+localhost:8080:local8080,datanode
+localhost:8081:local8081,datanode
+localhost:8082:local8082,datanode
+1.2、Mongodb环境配置
+1.2.1、MongoDB配置服务器设置
+## 配置文件内容
+pidfilepath = /media/xllu/aa/localhost_shard_jiqun/conf/conf_m/conf_m.pid
+dbpath = /media/xllu/aa/localhost_shard_jiqun/conf/conf_m/conf_m_data
+logpath = /media/xllu/aa/localhost_shard_jiqun/conf/conf_m/conf_m.log
+directoryperdb=true 
+logappend = true
+bind_ip = localhost
+port = 20000
+#以后台方式启动
+fork = true
+#declare this is a config db of a cluster;
+configsvr = true
+replSet=conrep
+noprealloc=true
+#设置最大连接数
+maxConns=128
+wiredTIgerCacheSizeGB=2
+1.2.2、MongoDB路由服务器设置
+nohup ./mongos --configdb conrep/localhost: 20000,localhost:30001,localhost:30002 --bind_ip localhost --port 40000 --logpath /media/xllu/aa/localhost_shard_jiqun/mongos/mongos40000.log --logappend --setParameter ShardingTaskExecutorPoolHostTimeoutMS=30000000 --setParameter taskExecutorPoolSize=6 --setParameter ShardingTaskExecutorPoolMaxConnecting=12 &
+1.2.3、MongoDB分片服务器设置
+## 配置文件内容
+pidfilepath = /media/xllu/aa/localhost_shard_jiqun/shard1/shard1_m/shard1_m.pid
+dbpath = /media/xllu/aa/localhost_shard_jiqun/shard1/shard1_m/shard1_m_data
+logpath = /media/xllu/aa/localhost_shard_jiqun/shard1/shard1_m/shard1_m.log
+directoryperdb=true 
+logappend = true
+bind_ip = localhost
+port = 20001
+fork = true
+#declare this is a shard db of a cluster;
+shardsvr = true
+#副本集名称
+replSet=shardrep1
+noprealloc=true
+#设置最大连接数
+maxConns=128
+wiredTIgerCacheSizeGB=4
