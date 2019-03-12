@@ -1,0 +1,45 @@
+附录3：数据库输入输出的性能对比脚本
+DolphinDB导入csv文件脚本：
+
+导入readings数据集
+timer loadTextEx(db, `readings_pt,`time, datapath, ,schema_readings)
+导入TAQ数据集
+timer {
+	for (fp in fps) {
+		job_id_tmp = fp.strReplace(".csv", "")
+		job_id_tmp1=split(job_id_tmp,"/")
+		job_id=job_id_tmp1[6]
+		job_name = job_id
+		submitJob(job_id, job_name, loadTextEx{db, `taq, `date`symbol, fp})
+		print now() + ": 已导入 " + fp
+	}
+	getRecentJobs(size(fps))
+}
+MongoDB导入csv文件脚本：
+导入readings数据集
+./mongoimport -h localhost:40000 -d db_nopt -c device_readings --file /media/xllu/aa/device/
+device_readings_mongo.csv --type csv --columnsHaveTypes --fields "time.date(2006-01-02T15:04:05),device_id.string(),battery_level.int32(),battery_status.string(),battery_temperature.double(),bssid.string(),cpu_avg_1min.double(),cpu_avg_5min.double(),cpu_avg_15min.double(),mem_free.double(),mem_used.double(),rssi.double(),ssid.string()" --parseGrace skipRow --numInsertionWorkers 12
+
+导入TAQ数据集
+for f in /media/xllu/aa/TAQ/mongo_split/*.csv ; do
+        /usr/bin/mongoimport \
+        -h localhost \
+        --port 40000 \
+        -d taq_pt_db \
+        -c taq_pt_col \
+        --type csv \
+        --columnsHaveTypes \
+        --fields "symbol.string(),date.date(20060102),time.date(15:04:05),bid.double(),ofr.double(),bidsiz.int32(),ofrsiz.int32(),mode.int32(),ex.string(),mmid.string()" \
+        --parseGrace skipRow \
+        --numInsertionWorkers 12 \
+        --file $f
+    echo "文件 $f 导入完成"
+done
+DolphinDB导出csv文件脚本：
+
+timer saveText((select * from t),"/media/xllu/aa/device/device_readings_out.csv")
+
+MongoDB导出csv文件脚本：
+
+mongoexport -h localhost:40000 -d db_nopt -c device_readings -o /media/xllu/aa/device/
+device_readings_mongo_out.csv
