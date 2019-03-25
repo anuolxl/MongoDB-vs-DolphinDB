@@ -4,8 +4,8 @@ DolphinDB和MongoDB都是为大数据而生的数据库。但是两者有这较�
 时间序列数据库DolphinDB和MongoDB在时序数据库集上的对比测试，主要结论如下：
 
 DolphinDB的数据导入速度比MongoDB高出两个数量级。数据量越大，性能差距越明显。数据导出方面，DolphinDB比MongoDB快50倍左右。
-磁盘空间占用方面，MongoDB占用磁盘是DolphinDB的2~3倍。
-数据库查询性能方面，DolphinDB在4个查询性能测试中速度比MongoDB快30倍；在5个查询性能测试中速度比MongoDB快10~30倍；在12个查询性能测试中速度比MongoDB快数倍；仅在两个点查询测试中，DolphinDB慢于MongoDB。
+磁盘空间占用方面，MongoDB占用磁盘是DolphinDB的2~ 3倍。
+数据库查询性能方面，DolphinDB在4个查询性能测试中速度比MongoDB快30倍；在5个查询性能测试中速度比MongoDB快10 ~30倍；在12个查询性能测试中速度比MongoDB快数倍；仅在两个点查询测试中，DolphinDB慢于MongoDB。
 1. 测试环境
 本次测试在单机上进行，测试设备配置如下：
 
